@@ -211,6 +211,147 @@ nav ul li a:hover, nav ul li a.active {
     margin-bottom: 0.5rem;
 }
 
+/* Chat container */
+.chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Chat toggle button */
+.chat-toggle {
+    background-color: #00ff88;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+.chat-toggle:hover {
+    background-color: #007bff;
+}
+
+/* Chat window */
+.chat-window {
+    display: none; /* Hidden by default */
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 500px;
+    max-height: 420px;
+    overflow: hidden;
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+}
+
+/* Chat window when active */
+.chat-window.active {
+    display: block;
+}
+
+/* Chat header */
+.chat-header {
+    background-color: #00ff88;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.chat-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Chat body */
+.chat-body {
+    padding: 10px;
+    overflow-y: auto;
+    max-height: 350px;
+}
+
+/* Chat messages area */
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Message bubble styling */
+.message {
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 75%;
+    word-wrap: break-word;
+    line-height: 1.4;
+    position: relative;
+}
+
+/* Bot message bubble */
+.message.bot {
+    background-color: #00ff88;
+    color: #000;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px; /* Slightly flatten bottom-left for Messenger-like style */
+}
+
+/* User message bubble */
+.message.user {
+    background-color: #007bff;
+    color: #ffffff;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px; /* Slightly flatten bottom-right for Messenger-like style */
+}
+
+/* Chat input form */
+.chat-input-form {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input-form input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+    outline: none;
+}
+
+.chat-input-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chat-input-form button:hover {
+    background-color: #0056b3;
+}
+
+
 /* Footer */
 footer {
     background: #0a0a1a;
@@ -280,5 +421,15 @@ footer p {
 
     .nav-center li {
         margin: 10px 0;
+    }
+    .chat-window {
+        width: 80vw;
+        max-height: 60vh;
+    }
+    .chat-messages {
+        max-height: 50vh;
+    }
+    .message {
+        max-width: 85%; /* Slightly wider on smaller screens */
     }
 }

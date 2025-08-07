@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Awesom AI - Resurgence Labs</title>
-    <link rel="shortcut icon" href="img/logo.png">
+    <link rel="shortcut icon" href="img/awesomlog.png">
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
     <header>
         <nav>
+
             <div class="logo">Awesom AI</div>
             <div class="menu-toggle" id="mobile-menu">
                 <span></span>
@@ -23,6 +24,8 @@
             </ul>
         </nav>
     </header>
+
+
 
     <section class="hero">
         <h1>The AI Agent Era is here. And Awesom AI is here to bring it to Somnia.</h1>
@@ -67,12 +70,70 @@
         </div>
     </section>
 
+    <div class="chat-container">
+        <button class="chat-toggle" id="chat-toggle">💬</button>
+        <div class="chat-window" id="chat-window">
+            <div class="chat-header">
+                <h3>Awesom AI Chat</h3>
+                <button class="chat-close" id="chat-close">✖</button>
+            </div>
+            <div class="chat-body">
+                <div class="chat-messages" id="chat-messages">
+                    <p class='message bot'>Welcome to Awesom AI! How can I assist you with Somnia today?</p>
+                </div>
+            </div>
+            <form class="chat-input-form" id="chat-form">
+                <input type="text" id="chat-input" placeholder="type your Somnia query" autocomplete="off">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+
     <footer>
         <p>Resurgence Labs &copy; 2025</p>
     </footer>
     <script>
         document.getElementById("mobile-menu").addEventListener("click", function () {
             document.querySelector(".nav-center").classList.toggle("nav-active");
+        });
+        document.getElementById("chat-toggle").addEventListener("click", function () {
+            const chatWindow = document.getElementById("chat-window");
+            chatWindow.classList.toggle("active");
+        });
+
+        document.getElementById("chat-close").addEventListener("click", function () {
+            document.getElementById("chat-window").classList.remove("active");
+        });
+        // Handle message submission
+        document.getElementById("chat-form").addEventListener("submit", function (e) {
+            e.preventDefault(); // Prevent form from refreshing the page
+            const input = document.getElementById("chat-input");
+            const messageText = input.value.trim();
+
+            if (messageText) {
+                const messagesContainer = document.getElementById("chat-messages");
+
+                // Add user message
+                const userMessage = document.createElement("p");
+                userMessage.classList.add("message", "user");
+                userMessage.textContent = messageText;
+                messagesContainer.appendChild(userMessage);
+
+                // Clear input
+                input.value = "";
+
+                // Scroll to the bottom of the messages
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                // Simulate a bot response (replace with actual AI integration if needed)
+                setTimeout(() => {
+                    const botMessage = document.createElement("p");
+                    botMessage.classList.add("message", "bot");
+                    botMessage.textContent = "Thanks for your message! This is a placeholder response.";
+                    messagesContainer.appendChild(botMessage);
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }, 500);
+            }
         });
     </script>
     <script src="index.js"></script>
