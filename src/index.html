@@ -106,7 +106,7 @@
             document.getElementById("chat-window").classList.remove("active");
         });
         // Handle message submission
-        document.getElementById("chat-form").addEventListener("submit", function (e) {
+        document.getElementById("chat-form").addEventListener("submit", async function (e) {
             e.preventDefault(); // Prevent form from refreshing the page
             const input = document.getElementById("chat-input");
             const messageText = input.value.trim();
@@ -126,11 +126,12 @@
                 // Scroll to the bottom of the messages
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-                // Simulate a bot response (replace with actual AI integration if needed)
+                // bot response
+                const botResponse = await getBotResponse(messageText);
                 setTimeout(() => {
                     const botMessage = document.createElement("p");
                     botMessage.classList.add("message", "bot");
-                    botMessage.textContent = "Thanks for your message! This is a placeholder response.";
+                    botMessage.textContent = botResponse;
                     messagesContainer.appendChild(botMessage);
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 }, 500);
