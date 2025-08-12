@@ -37,7 +37,7 @@ async function getBotResponse(userInput){
             return "Somnia is currently in the testnet phase so this might not be a good time for it."
         }
         else if (normalizedQuery == 'what is awesom ai?'){
-            return "Awesom AI is the one of the AI Agents on the Somnia Network. It is known for having the largest cached collection of queries, and can respond to informational, transactional, and custom user queries in a text format."
+            return "Awesom AI is the one of the AI Agents on the Somnia Network. It is known for having the largest cached collection of queries, and can respond to informational, transaction, and custom user queries in a text format."
         }
         else {
             return 'looks like this is an info query: '.concat(normalizedQuery).concat(" But it returned no results.");
