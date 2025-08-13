@@ -39,6 +39,9 @@ async function getBotResponse(userInput){
         else if (normalizedQuery == 'what is awesom ai?'){
             return "Awesom AI is the one of the AI Agents on the Somnia Network. It is known for having the largest cached collection of queries, and can respond to informational, transactional, and custom user queries in a text format."
         }
+        else if (normalizedQuery == 'what are the best decentralized swaps on somnia?'){
+            return "Somnia is still in the testnet phase so there aren't any major swaps for somnia."
+        }
         else {
             return 'looks like this is an info query: '.concat(normalizedQuery).concat(" But it returned no results.");
         }
@@ -53,7 +56,7 @@ async function getBotResponse(userInput){
         return "looks like this is an AI request: ".concat(qry);
     }
     else if (typeOfInput == 4){
-        return "looks like your query isn't properly formatted.";
+        return "Looks like your query isn't properly formatted. Please make sure it starts with either 'i:' for info queries, 'tx:' for transaction queries, and '<key>:' where key is your 12 digit Awesom AI secret key for custom queries.";
     }
     else {
         return "what the fuck is going on!?";
