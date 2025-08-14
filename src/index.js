@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as queryMap from "./querymap.json";
+import * as responseMap from "./responsemap.json";
 
 
 
@@ -27,23 +28,13 @@ async function getBotResponse(userInput){
     if (typeOfInput == 1){
         const qry = userInput.slice(2, userInput.length);
         const normalizedQuery = queryMap[qry] || "faulty query";
-        if (normalizedQuery == 'what is somnia?'){
-            return "Somnia is an EVM based layer 1 blockchain. It is noted for its fast speed.";
-        }
-        else if (normalizedQuery == 'what are some good wallets for somnia?'){
-            return "It is highly recommended that you use the MetaMask or Coinbase wallets for Somnia."
-        }
-        else if (normalizedQuery == 'where can i stake on somnia?'){
-            return "Somnia is currently in the testnet phase so this might not be a good time for it."
-        }
-        else if (normalizedQuery == 'what is awesom ai?'){
-            return "Awesom AI is the one of the AI Agents on the Somnia Network. It is known for having the largest cached collection of queries, and can respond to informational, transactional, and custom user queries in a text format."
-        }
-        else if (normalizedQuery == 'what are the best decentralized swaps on somnia?'){
-            return "Somnia is still in the testnet phase so there aren't any major swaps for somnia."
+        const normalizedResponse = responseMap[normalizedQuery] || "no response";
+        console.log(normalizedQuery);
+        if (normalizedResponse == 'no response'){
+            return "Looks like this query doesn't match anything in our cached query list. Please go through our docs and use one of the supported queries, or use a custom query if you can't find a similar query.";
         }
         else {
-            return 'looks like this is an info query: '.concat(normalizedQuery).concat(" But it returned no results.");
+            return normalizedResponse;
         }
 
     }
