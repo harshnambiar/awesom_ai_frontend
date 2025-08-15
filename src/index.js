@@ -26,7 +26,8 @@ async function getBotResponse(userInput){
     }
 
     if (typeOfInput == 1){
-        const qry = userInput.slice(2, userInput.length);
+        const qry1 = userInput.slice(2, userInput.length);
+        const qry = qry1.trim();
         const normalizedQuery = queryMap[qry] || "faulty query";
         const normalizedResponse = responseMap[normalizedQuery] || "no response";
         console.log(normalizedQuery);
@@ -39,8 +40,19 @@ async function getBotResponse(userInput){
 
     }
     else if (typeOfInput == 2){
-        const qry = userInput.slice(3, userInput.length);
-        return "looks like this is a transaction query: ".concat(qry);
+        const qry1 = userInput.slice(3, userInput.length);
+        const qry = qry1.trim();
+        const regex = /^send\s+(\d+)\s+tokens\s+to\s+(.*)$/;
+        const match = qry.match(regex);
+        if (match){
+            const amt = match[1];
+            const recipient = match[2];
+            return "sending ".concat(amt).concat(" to ").concat(recipient).concat(".");
+        }
+        else {
+            return "looks like this is transaction query isn't correctly formatted: ".concat(qry);
+        }
+
     }
     else if (typeOfInput == 3){
         const qry = userInput.slice(13, userInput.length);

@@ -59,5 +59,14 @@
     "how do i participate in somnia hackathons?": "The hackathons on Somnia happen from time to time. The official announcements are always on the Somnia Blog, as well as on the Official Discord. Please follow the announcements there and follow the instructions posted there in order to participate in the hackathons.",
     "what are the costs of deploying on somnia?": "",
     "what is the latest on somnia airdrops?": "As of now, there is no official announcement on the Somnia Token airdrop. Please only refer to the official Somnia website and X/Twitter accounts for information on the same. Please be aware that scammers might post links claiming to be the airdrop while pretending to be the official handle. Access any such link only after due dilligence.",
-    "how can i collaborate with other somnia developers?": ""
+    "how can i collaborate with other somnia developers?": "",
+    "what should i do if my somnia transaction fails?": "",
+    "how do i recover my somnia wallet?": "Just like any other cryptocurrency wallet, recovering your Somnia wallet is possible only if you have its private key or the 12 (or 24) word phrase. This is why please write down these details, preferably on hard copy and keep it somewhere safe. Don't share your keys with anyone. If you have these details, use the Import Account option on your wallet and input the private key or phrase.",
+    "how do i report a bug on somnia?": "",
+    "what new features are coming to somnia?": "",
+    "when will somnia’s mainnet launch?": "",
+    "when will the somnia token launch?": "",
+    "how can i join the somnia team?": "",
+    "what are the best explorers on somnia?": "",
+    "where can i read the somnia whitepaper?": "https://docs.somnia.network//litepaper"
 }
