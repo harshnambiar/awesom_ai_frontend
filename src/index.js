@@ -9,6 +9,14 @@ async function form1(){
 }
 window.form1 = form1;
 
+async function createHtmlResponse(text){
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const text1 = text.replace(urlRegex, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+    const lineRegex = /[\r\n]/g;
+    return text1.replace(lineRegex, '<br/>');
+}
+window.createHtmlResponse = createHtmlResponse;
+
 
 async function getBotResponse(userInput){
     var typeOfInput = 0;

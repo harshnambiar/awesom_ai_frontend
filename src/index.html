@@ -128,10 +128,11 @@
 
                 // bot response
                 const botResponse = await getBotResponse(messageText);
+                const urlEnabledBotResponse = await createHtmlResponse(botResponse);
                 setTimeout(() => {
                     const botMessage = document.createElement("p");
                     botMessage.classList.add("message", "bot");
-                    botMessage.textContent = botResponse;
+                    botMessage.innerHTML = urlEnabledBotResponse;
                     messagesContainer.appendChild(botMessage);
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 }, 500);
