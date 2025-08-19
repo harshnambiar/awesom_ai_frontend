@@ -351,6 +351,118 @@ nav ul li a:hover, nav ul li a.active {
     background-color: #0056b3;
 }
 
+/* Query Builder*/
+.query-container {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Chat toggle button */
+.query-toggle {
+    background-color: #00ff88;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+.query-toggle:hover {
+    background-color: #007bff;
+}
+
+/* Chat window */
+.query-window {
+    display: none; /* Hidden by default */
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 500px;
+    max-height: 450px;
+    overflow: hidden;
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+}
+
+/* Query window when active */
+.query-window.active {
+    display: block;
+}
+
+/* Query header */
+.query-header {
+    background-color: #00ff88;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.query-header h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.query-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+.query-body {
+    padding: 10px;
+    overflow-y: auto;
+    max-height: 350px;
+}
+
+.query-results {
+    min-height: 250px;
+    color: #007bff;
+    font-size: 0.7em;
+}
+
+
+/* Chat input form */
+.query-input-form {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.query-input-form input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+    outline: none;
+}
+
+.query-input-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.query-input-form button:hover {
+    background-color: #0056b3;
+}
+
+
 
 /* Footer */
 footer {
@@ -431,5 +543,9 @@ footer p {
     }
     .message {
         max-width: 85%; /* Slightly wider on smaller screens */
+    }
+    .query-window {
+        width: 80vw;
+        max-height: 60vh;
     }
 }

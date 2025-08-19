@@ -71,6 +71,25 @@
         </div>
     </section>
 
+    <div class="query-container">
+        <button class="query-toggle" id="query-toggle">🛠️</button>
+        <div class="query-window" id="query-window">
+            <div class="query-header">
+                <h3>Awesom AI Query Builder</h3>
+                <button class="query-close" id="query-close">✖</button>
+            </div>
+            <div class="query-body">
+                <div class="query-results" id="query-results">
+
+                </div>
+            </div>
+            <form class="query-input-form" id="query-form">
+                <input type="text" id="query-input" placeholder="type the keywords for your query" autocomplete="off">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+
     <div class="chat-container">
         <button class="chat-toggle" id="chat-toggle">💬</button>
         <div class="chat-window" id="chat-window">
@@ -94,17 +113,23 @@
         <p>Resurgence Labs &copy; 2025</p>
     </footer>
     <script>
+        var chatOn = false;
+        var queryOn = false;
         document.getElementById("mobile-menu").addEventListener("click", function () {
             document.querySelector(".nav-center").classList.toggle("nav-active");
         });
+
         document.getElementById("chat-toggle").addEventListener("click", function () {
             const chatWindow = document.getElementById("chat-window");
+            document.getElementById("query-window").classList.remove("active");
             chatWindow.classList.toggle("active");
         });
 
         document.getElementById("chat-close").addEventListener("click", function () {
             document.getElementById("chat-window").classList.remove("active");
         });
+
+
         // Handle message submission
         document.getElementById("chat-form").addEventListener("submit", async function (e) {
             e.preventDefault(); // Prevent form from refreshing the page
@@ -138,6 +163,46 @@
                 }, 500);
             }
         });
+
+        document.getElementById("query-toggle").addEventListener("click", function () {
+            const queryWindow = document.getElementById("query-window");
+            document.getElementById("chat-window").classList.remove("active");
+            queryWindow.classList.toggle("active");
+        });
+
+        document.getElementById("query-close").addEventListener("click", function () {
+            document.getElementById("query-window").classList.remove("active");
+        });
+
+        // Handle query submission
+        document.getElementById("query-form").addEventListener("submit", async function (e) {
+            e.preventDefault(); // Prevent form from refreshing the page
+            const input = document.getElementById("query-input");
+            const queryText = input.value.trim();
+
+            if (queryText) {
+                const resultContainer = document.getElementById("query-results");
+                resultContainer.innerHTML = ``;
+
+                const suggestions = await getQuerySuggestions(queryText);
+                setTimeout(() => {
+                    var i = 0;
+                    while (i < suggestions.length){
+                        const newSuggestion = document.createElement("p");
+                        newSuggestion.innerHTML = suggestions[i];
+                        resultContainer.appendChild(newSuggestion);
+                        i++;
+                    }
+                    resultContainer.scrollTop = resultContainer.scrollHeight;
+                }, 500);
+
+                console.log(suggestions);
+                // Clear input
+                input.value = "";
+            }
+        });
+
+
     </script>
     <script src="index.js"></script>
 </body>
