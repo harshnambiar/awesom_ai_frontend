@@ -1,6 +1,100 @@
 import axios from "axios";
+import detectEthereumProvider from "@metamask/detect-provider"
+import Web3 from "web3";
 import * as queryMap from "./querymap.json";
 import * as responseMap from "./responsemap.json";
+
+
+
+async function connectOrDisconnect() {
+    const acc_cur = localStorage.getItem("acc") || "";
+    console.log(acc_cur);
+    if (acc_cur != "" && acc_cur != null){
+        localStorage.setItem("acc","");
+        document.getElementById("log_status").textContent = "Login";
+        return;
+    }
+
+    var chainId = 50312;
+    var cid = '0xc488';
+    var chain = 'Somnia Testnet';
+    var name = 'SOMNIA';
+    var symbol = 'STT';
+    var rpc = "https://dream-rpc.somnia.network";
+
+    const provider = await detectEthereumProvider()
+    console.log(window.ethereum);
+    if (provider && provider === window.ethereum) {
+        console.log("MetaMask is available!");
+
+        console.log(window.ethereum.networkVersion);
+        if (window.ethereum.networkVersion !== chainId) {
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: cid }]
+                });
+                console.log("changed to ".concat(name).concat(" testnet successfully"));
+
+            } catch (err) {
+                console.log(err);
+                // This error code indicates that the chain has not been added to MetaMask
+                if (err.code === 4902) {
+                    console.log("please add ".concat(name).concat(" Testnet as a network"));
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [
+                                {
+                                    chainName: chain,
+                                    chainId: cid,
+                                    nativeCurrency: { name: name, decimals: 18, symbol: symbol },
+                                    rpcUrls: [rpc]
+                                }
+                            ]
+                        });
+                }
+                else {
+                    console.log(err);
+                }
+            }
+        }
+        await startApp(provider);
+    } else {
+        console.log("Please install MetaMask!")
+    }
+
+
+
+}
+window.connectOrDisconnect = connectOrDisconnect;
+
+
+async function startApp(provider) {
+  if (provider !== window.ethereum) {
+    console.error("Do you have multiple wallets installed?")
+  }
+  else {
+    const accounts = await window.ethereum
+    .request({ method: "eth_requestAccounts" })
+    .catch((err) => {
+      if (err.code === 4001) {
+        console.log("Please connect to MetaMask.")
+      } else {
+        console.error(err)
+      }
+    })
+    console.log("hi");
+  const account = accounts[0];
+  var web3 = new Web3(window.ethereum);
+  const bal = await web3.eth.getBalance(account);
+  //console.log("hi");
+  console.log(bal);
+  console.log(account);
+  localStorage.setItem("acc",account.toString());
+  document.getElementById("log_status").textContent = (account.toString().slice(0,8)).concat('..(Logout)');
+
+  }
+}
 
 
 
