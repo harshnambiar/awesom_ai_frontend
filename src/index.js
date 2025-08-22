@@ -1,8 +1,10 @@
 import axios from "axios";
 import detectEthereumProvider from "@metamask/detect-provider"
 import Web3 from "web3";
+import * as ethers from "ethers";
 import * as queryMap from "./querymap.json";
 import * as responseMap from "./responsemap.json";
+
 
 
 
@@ -144,12 +146,20 @@ async function getBotResponse(userInput){
     else if (typeOfInput == 2){
         const qry1 = userInput.slice(3, userInput.length);
         const qry = qry1.trim();
-        const regex = /^send\s+(\d+)\s+tokens\s+to\s+(.*)$/;
+        const regex = /send\s+(\d*\.?\d+)\s+token[s]?\s+to\s+(.*)$/ ///^send\s+(\d+)\s+tokens\s+to\s+(.*)$/;
         const match = qry.match(regex);
         if (match){
             const amt = match[1];
             const recipient = match[2];
-            return "sending ".concat(amt).concat(" to ").concat(recipient).concat(".");
+
+            try {
+                const res = await transferTokens(recipient, amt);
+                return "sent ".concat(amt).concat(" to ").concat(recipient).concat(". Tx Hash: ").concat(res.hash);
+            }
+            catch(err){
+                return "failed to send ".concat(amt).concat(" to ").concat(recipient).concat(". Error: ").concat(err);
+            }
+
         }
         else {
             return "looks like this is transaction query isn't correctly formatted: ".concat(qry);
@@ -186,3 +196,97 @@ async function getQuerySuggestions(text){
     return shuffledMatches;
 }
 window.getQuerySuggestions = getQuerySuggestions;
+
+
+async function transferTokens(target, amount) {
+  const rpcUrl = 'https://rpc.testnet.somnia.network';
+  const chainId = '0xc488';
+
+  try {
+    // Check MetaMask availability
+    if (typeof window.ethereum === 'undefined') {
+      throw new Error('MetaMask is not installed');
+    }
+
+    // Request account access
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+    // Switch to Somnia Shannon Testnet
+    try {
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId }],
+      });
+    } catch (switchError) {
+      if (switchError.code === 4902) {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId,
+            chainName: 'Somnia Testnet',
+            rpcUrls: [rpcUrl],
+            nativeCurrency: { name: 'SOMNIA', symbol: 'STT', decimals: 18 },
+            blockExplorerUrls: ['https://shannon-explorer.somnia.network'],
+          }],
+        });
+      } else {
+        throw switchError;
+      }
+    }
+
+    // Initialize provider and signer
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const signerAddress = await signer.getAddress();
+    if (!signerAddress) {
+      throw new Error('No signer available. Please connect MetaMask.');
+    }
+
+    // Verify network
+    const network = await provider.getNetwork();
+    if (network.chainId !== 50312n) {
+      throw new Error('Wrong network. Please connect to Somnia Shannon Testnet.');
+    }
+
+    // Validate recipient address
+    if (!ethers.isAddress(target)) {
+      throw new Error('Invalid recipient address');
+    }
+
+    // Check native STT balance
+    const decimals = 18;
+    const amt = ethers.parseUnits(amount.toString(), decimals);
+    const balance = await provider.getBalance(signerAddress);
+    console.log('Balance:', ethers.formatUnits(balance, decimals), 'STT');
+    if (balance < amt) {
+      throw new Error(`Insufficient STT balance: ${ethers.formatUnits(balance, decimals)} available`);
+    }
+
+    // Check SOM balance for gas
+    const feeData = await provider.getFeeData();
+    const gasLimit = 21000n; // Standard for native transfers
+    const gasCost = feeData.maxFeePerGas * gasLimit;
+    if (balance < gasCost) {
+      throw new Error(`Insufficient STT for gas: ${ethers.formatUnits(gasCost, decimals)} needed`);
+    }
+
+    // Send native STT transaction
+    const tx = await signer.sendTransaction({
+      to: target,
+      value: amt,
+      gasLimit,
+      maxFeePerGas: feeData.maxFeePerGas,
+      maxPriorityFeePerGas: feeData.maxPriorityFeePerGas
+    });
+    console.log('Transaction sent! Hash:', tx.hash);
+
+    // Wait for confirmation
+    const receipt = await tx.wait();
+    console.log('Transaction confirmed in block:', receipt.blockNumber);
+
+    return { txHash: tx.hash, blockNumber: receipt.blockNumber };
+  } catch (error) {
+    console.error('Error during transfer:', error);
+    throw error;
+  }
+}
