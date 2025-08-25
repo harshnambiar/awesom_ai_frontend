@@ -185,7 +185,10 @@
                 const resultContainer = document.getElementById("query-results");
                 resultContainer.innerHTML = ``;
 
-                const suggestions = await getQuerySuggestions(queryText);
+                var suggestions = await getQuerySuggestions(queryText);
+                if (suggestions.length == 0){
+                    suggestions.push('No Results Found.');
+                }
                 setTimeout(() => {
                     var i = 0;
                     while (i < suggestions.length){
@@ -201,6 +204,7 @@
                 // Clear input
                 input.value = "";
             }
+
         });
 
 
